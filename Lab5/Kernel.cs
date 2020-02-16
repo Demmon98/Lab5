@@ -24,8 +24,8 @@ namespace Lab5
         private String command_file;
         private String config_file;
         private ControlPanel controlPanel;
-        private ArrayList memVector = new ArrayList();
-        private ArrayList instructVector = new ArrayList();
+        private List<Page> memVector = new List<Page>();
+        private List<Instruction> instructVector = new List<Instruction>();
         private String status;
         private bool doStdoutLog = false;
         private bool doFileLog = false;

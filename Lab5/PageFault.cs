@@ -58,47 +58,13 @@ namespace Lab5
         *   simulator, and allows one to modify the current display.
         */
 
-        private static int GetOldestPage(ArrayList mem)
+        public static void replacePage(List<Page> mem, int virtPageNum, int replacePageNum, ControlPanel controlPanel)
         {
-            List<Page> pages = new List<Page>();
+            ClockAlgorithm algorithm = new ClockAlgorithm(mem);
 
-            foreach (var item in mem)
-            {
-                pages.Add(item as Page);
-            }
-
-            return pages.Select(x => x.inMemTime).Max();
-        }
-
-        public static void replacePage(ArrayList mem, int virtPageNum, int replacePageNum, ControlPanel controlPanel)
-        {
-            int iterator = GetOldestPage(mem);
-
-            while (true)
-            {
-                Page pag = (Page)mem[iterator];
-
-                if (pag.physical != -1)
-                {
-                    if (pag.R == 0)
-                    {
-                        break;
-                    }
-                    if (pag.R == 1)
-                    {
-                        pag.R = 0;
-                    }
-                }
-                iterator++;
-                if (iterator == mem.Count)
-                {
-                    iterator = 0;
-                }
-            }
-
-            Page page = (Page)mem[iterator];
+            Page page = algorithm.GetPageForDelete();
             Page nextpage = (Page)mem[replacePageNum];
-            controlPanel.removePhysicalPage(iterator);
+            controlPanel.removePhysicalPage(page.id);
             nextpage.physical = page.physical;
             controlPanel.addPhysicalPage(nextpage.physical, replacePageNum);
             page.inMemTime = 0;
