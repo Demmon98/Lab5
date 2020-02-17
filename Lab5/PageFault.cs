@@ -60,13 +60,12 @@ namespace Lab5
 
         public static void replacePage(List<Page> mem, int virtPageNum, int replacePageNum, ControlPanel controlPanel)
         {
-            ClockAlgorithm algorithm = new ClockAlgorithm(mem);
-
-            Page page = algorithm.GetPageForDelete();
+            Page page = ClockAlgorithm.GetPageForDelete();
             Page nextpage = (Page)mem[replacePageNum];
             controlPanel.removePhysicalPage(page.id);
             nextpage.physical = page.physical;
             controlPanel.addPhysicalPage(nextpage.physical, replacePageNum);
+            ClockAlgorithm.AddPage(nextpage);
             page.inMemTime = 0;
             page.lastTouchTime = 0;
             page.R = 0;

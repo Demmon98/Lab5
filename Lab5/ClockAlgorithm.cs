@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Lab5
 {
-    class ClockAlgorithm
+    static class ClockAlgorithm
     {
-        List<Page> pages;
-        int currPage;
-        public int CurrPage 
+        static List<Page> pages;
+        static int currPage;
+        static public int CurrPage 
         {
             get => currPage;
             private set
@@ -23,18 +22,21 @@ namespace Lab5
             }
         }
 
-        public ClockAlgorithm(List<Page> pages)
+        static public void LoadPages(List<Page> pages)
         {
-            var q = from item in pages
-                    where item.physical != -1
-                    orderby item.inMemTime descending
-                    select item;
+            pages.Sort((x, y) => x.inMemTime - y.inMemTime);
+            var ps = pages.FindAll((x) => x.physical != -1);
 
-            this.pages = q.ToList();
-            currPage = 0;
+            ClockAlgorithm.pages = ps;
+            ClockAlgorithm.currPage = 0;
         }
 
-        public Page GetPageForDelete()
+        static public void AddPage(Page p)
+        {
+            pages.Insert(currPage, p);
+        }
+
+        static public Page GetPageForDelete()
         {
             Page page;
 
@@ -55,9 +57,11 @@ namespace Lab5
                 }
             }
 
+            pages.Remove(page);
+
             return page;
         }
 
-        private Page MoveNext() => pages[CurrPage++];
+        static private Page MoveNext() => pages[CurrPage++];
     }
 }
