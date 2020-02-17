@@ -353,6 +353,8 @@ namespace Lab5
             }
         }
 
+        public void LoadPagesToClock() => ClockAlgorithm.LoadPages(memVector);
+
         public void setControlPanel(ControlPanel newControlPanel)
         {
             controlPanel = newControlPanel;

@@ -26,6 +26,7 @@ namespace Lab5
             kernel.setControlPanel(this);
 
             kernel.init(commands, config);
+            kernel.LoadPagesToClock();
         }
 
         public void paintPage(Page page)
