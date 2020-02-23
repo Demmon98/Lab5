@@ -9,18 +9,7 @@ namespace Lab5
     static class ClockAlgorithm
     {
         static List<Page> pages;
-        static int currPage;
-        static public int CurrPage 
-        {
-            get => currPage;
-            private set
-            {
-                if (value >= pages.Count)
-                    currPage = 0;
-                else
-                    currPage = value;
-            }
-        }
+        static int currPage  = -1;
 
         static public void LoadPages(List<Page> pages)
         {
@@ -31,29 +20,23 @@ namespace Lab5
             ClockAlgorithm.currPage = 0;
         }
 
-        static public void AddPage(Page p)
-        {
-            pages.Insert(currPage, p);
-        }
+        static public void AddPage(Page p) => pages.Insert(currPage, p);
 
         static public Page GetPageForDelete()
         {
-            Page page;
+            Page page = null;
 
-            while (true)
+            while (MoveNext())
             {
-                page = MoveNext();
+                page = pages[currPage];
 
                 if (page.physical != -1)
                 {
                     if (page.R == 0)
-                    {
                         break;
-                    }
+
                     if (page.R == 1)
-                    {
                         page.R = 0;
-                    }
                 }
             }
 
@@ -62,6 +45,16 @@ namespace Lab5
             return page;
         }
 
-        static private Page MoveNext() => pages[CurrPage++];
+        static private bool MoveNext()
+        {
+            if (currPage >= pages.Count)
+                Reset();
+
+            currPage++;
+
+            return true;
+        }
+
+        static private void Reset() => currPage = -1;
     }
 }
